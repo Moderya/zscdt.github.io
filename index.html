@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>西南林业大学智慧校园地图</title>
+  <title>西南林业大学智慧校园导航地图</title>
   
   <style>
     * {
@@ -234,15 +234,15 @@
 <body>
   <div id="loading" class="loading-overlay">
     <div class="spinner"></div>
-    <p>正在加载校园地图...</p>
+    <p>正在全力加载校园导航地图，请稍候...</p>
   </div>
   
   <div class="plan-tips" id="planTips">
-    ✅ 路径规划功能已关闭，点击底部【开启路径规划】按钮即可使用路线规划
+    ✅ 路线规划功能暂未激活，点击底部【开启路径规划】按钮即可解锁路线导航服务
   </div>
   
   <div class="sidebar" id="sidebar">
-    <h3>西南林业大学智慧校园</h3>
+    <h3>西南林业大学智慧校园导航</h3>
     <p id="campus-intro"></p>
     <div id="spot-list" style="margin-top: 15px;"></div>
   </div>
@@ -251,13 +251,13 @@
 
   <div class="route-tool">
     <button class="plan-switch-btn" id="planSwitch">开启路径规划</button>
-    <button class="route-btn active" data-type="drive">驾车</button>
-    <button class="route-btn" data-type="ride">骑行</button>
-    <button class="route-btn" data-type="walk">步行</button>
-    <button class="clear-btn" id="clearRoute">清空路线</button>
+    <button class="route-btn active" data-type="drive">驾车导航</button>
+    <button class="route-btn" data-type="ride">骑行导航</button>
+    <button class="route-btn" data-type="walk">步行导航</button>
+    <button class="clear-btn" id="clearRoute">清除已规划路线</button>
   </div>
 
-  <!-- 高德安全配置（保留原有配置，已替换你的Key） -->
+  <!-- 高德安全配置（保留原有配置，已替换专属Key） -->
   <script type="text/javascript">
     window._AMapSecurityConfig = {
       securityJsCode: "50f177b3ea427e38fc9eaa98d293d074"
@@ -270,7 +270,7 @@
     "use strict";
 
     const CONFIG = {
-      // 已替换为你的Key：a9df1e83fab53f04df62c64ef0fc8277
+      // 专属Key：a9df1e83fab53f04df62c64ef0fc8277
       amapKey: "a9df1e83fab53f04df62c64ef0fc8277",
       campus: {
         name: "西南林业大学（校本部）",
@@ -278,21 +278,60 @@
         zoom: 17,
         pitch: 45,
         rotation: 10,
-        intro: `西南林业大学（校本部）位于云南省昆明市盘龙区白龙寺300号，是一所以林学为特色的省属重点大学。校园占地约1238亩，拥有多栋教学楼、食堂、图书馆、体育馆、实验楼等完善的教学与生活设施，绿植覆盖率达80%以上，环境清幽。`,
+        intro: `西南林业大学校本部地处云南省昆明市盘龙区白龙寺300号，作为省属重点大学，该校以林学学科为核心发展特色。校园总占地规模约1238亩，区内教学楼、餐饮中心、图书馆、体育馆、实验楼等教学与生活配套设施一应俱全，绿化覆盖比例超过80%，整体环境清雅宜人，充满自然气息。`,
         spots: [
-          { id: 1, position: [102.740286, 25.072815], name: "教学主楼", type: "academic", desc: "全校核心教学地标，承担主要理论课程教学", fullDesc: `📌 教学主楼【核心教学楼】\n全校核心教学建筑，共12层，承担全校各院系公共必修课、专业理论课教学任务，是校内规模最大的教学楼。\n✅ 配套：86间多媒体教室、3个阶梯报告厅、每层设自习区与直饮水点，一楼设教务服务中心。\n💡 贴士：早晚自习高峰座位紧张，期末开放至22:30，电梯分单双层运行效率更高。` },
-          { id: 2, position: [102.739124, 25.073126], name: "第一教学楼", type: "academic", desc: "基础学科教学楼，以文理课程为主", fullDesc: `📌 第一教学楼【基础学科楼】\n校内基础课程核心教学楼，共6层，主要承担高数、英语、计算机、思政等公共基础课程教学。\n✅ 配套：标准化教室42间，全部配备多媒体设备与空调，一楼设打印店与饮水区。\n💡 贴士：教室分布集中，上课高峰期人流量大，建议提前5分钟到达。` },
-          { id: 3, position: [102.742157, 25.073568], name: "第二教学楼", type: "academic", desc: "专业教学楼，以林学、园林相关课程为主", fullDesc: `📌 第二教学楼【林学专业楼】\n贴合学校特色的专业教学楼，共7层，主要承担林学、园林、生态学、水土保持等专业课教学。\n✅ 配套：专业多媒体教室、小型研讨室、课程设计教室，部分教室配备专业实验设备。\n💡 贴士：离实验楼较近，专业课实验可就近上课，自习区较少建议去图书馆。` },
-          { id: 4, position: [102.743521, 25.071896], name: "第三教学楼", type: "academic", desc: "综合教学楼，以经管、文法类课程为主", fullDesc: `📌 第三教学楼【综合文科楼】\n校内文科类综合教学楼，共5层，主要承担经管、文法、外语、艺术类课程教学。\n✅ 配套：多媒体教室35间，语音教室6间，画室2间，环境安静适合文科学习。\n💡 贴士：离北苑食堂近，下课就餐方便，自习座位充足适合日常自习。` },
-          { id: 5, position: [102.738569, 25.070258], name: "实训教学楼", type: "academic", desc: "实践教学为主，含机房、实训教室", fullDesc: `📌 实训教学楼【实践教学楼】\n校内实践课程核心楼，共8层，主要承担计算机实训、测绘实训、专业软件操作等实践课程。\n✅ 配套：计算机机房6间、测绘实训室3间、电工电子实训室2间，设备定期更新。\n💡 贴士：上机课需提前预约机位，实训课程较多，建议带U盘存储作业。` },
-          { id: 6, position: [102.742891, 25.070582], name: "主图书馆", type: "library", desc: "校内核心图书馆，馆藏百万册各类图书文献", fullDesc: `📌 主图书馆【核心馆藏馆】\n云南省林业类文献最齐全的图书馆，总建筑面积1.8万㎡，馆藏纸质图书130余万册，电子文献200余万篇，主打林学特色馆藏。\n✅ 配套：借阅大厅、图书阅览区、考研自习区、电子阅览室、学术研讨室，支持校园卡借阅与线上预约。\n💡 贴士：需刷卡入馆，考研座位提前预约，周五下午闭馆整理，日常闭馆时间22:00。` },
-          { id: 7, position: [102.741856, 25.072135], name: "林业专业分馆", type: "library", desc: "林学专业特色图书馆，馆藏专业文献资料", fullDesc: `📌 林业专业分馆【特色馆藏馆】\n校内林学专业专属图书馆，共3层，馆藏林业、园林、森保、木材科学等专业图书与文献，是专业课学习的核心阵地。\n✅ 配套：专业阅览区、文献检索室、标本展示区，馆藏珍稀林木标本超千份，可查阅专业外文文献。\n💡 贴士：人流量较少，专业资料齐全，适合专业课复习与论文查阅，开放时间8:00-21:00。` },
-          { id: 8, position: [102.739876, 25.070129], name: "南苑学生食堂", type: "dining", desc: "校内核心食堂，菜品丰富，性价比高", fullDesc: `📌 南苑学生食堂【核心餐饮中心】\n校本部最大食堂，共3层可容纳2000余人就餐，菜品兼顾南北口味与云南民族特色，是师生就餐首选。\n✅ 配套：1楼大众快餐、2楼特色风味、3楼聚餐套餐，支持校园卡与移动支付，餐具每日消毒。\n💡 贴士：午餐高峰11:30-12:30，晚餐17:30-18:30，3楼环境好错峰就餐体验更佳。` },
-          { id: 9, position: [102.743258, 25.073269], name: "北苑食堂", type: "dining", desc: "风味食堂，主打特色小吃与地方美食", fullDesc: `📌 北苑食堂【特色风味食堂】\n校内特色小吃食堂，共2层，主打云南米线、面条、炒饭、炸鸡汉堡、麻辣香锅等特色美食，口味多样。\n✅ 配套：特色窗口15个，早餐种类丰富，夜宵开放至21:30，支持移动支付，价格实惠。\n💡 贴士：离第三教学楼与体育馆近，运动后就餐方便，小吃分量足性价比高。` },
-          { id: 10, position: [102.740635, 25.071589], name: "清真食堂", type: "dining", desc: "清真特色食堂，菜品符合清真饮食标准", fullDesc: `📌 清真食堂【民族特色食堂】\n校内清真专属食堂，共2层，菜品严格遵循清真饮食标准，主打清真快餐、牛肉面、手抓饭、烤包子等。\n✅ 配套：菜品干净卫生，分量充足，价格亲民，兼顾民族饮食需求，支持校园卡与移动支付。\n💡 贴士：就餐人数适中，无需排队，离教学主楼近，课间就餐方便快捷。` },
-          { id: 11, position: [102.738256, 25.071236], name: "教工食堂", type: "dining", desc: "教职工食堂，菜品精致，环境安静", fullDesc: `📌 教工食堂【精致便捷食堂】\n校内教职工专属食堂，对外开放，共1层，菜品精致少油少盐，主打家常菜与营养餐，种类不多但品质高。\n✅ 配套：就餐环境安静，座位宽敞，早餐有包子豆浆油条，午餐晚餐为套餐形式，支持扫码支付。\n💡 贴士：人流量少无需排队，适合喜欢安静就餐的同学，价格略高于学生食堂。` },
-          { id: 12, position: [102.743567, 25.072148], name: "体育馆", type: "sports", desc: "综合体育场馆，含篮球、羽毛球、健身区", fullDesc: `📌 体育馆【综合体育中心】\n校内标准化体育场馆，分室内主馆与室外场地，承担体育教学、校队训练与校园文体活动。\n✅ 配套：室内篮球场2个、羽毛球场8个、乒乓球台12张、健身房与形体教室，室外塑胶跑道与排球场。\n💡 贴士：课余时间免费开放，器材可登记租借，周末人流量大建议错峰使用，禁止穿高跟鞋入场。` },
-          { id: 13, position: [102.741234, 25.071001], name: "实验楼", type: "laboratory", desc: "林业专业实验楼，配备完善科研实验设备", fullDesc: `📌 实验楼【林业科研基地】\n校内核心实验教学建筑，共8层，承担林学、园林、生物技术等专业实验课程与科研项目。\n✅ 配套：植物标本室、土壤检测室、林木育种室、生态监测室，每层有实验指导老师值班，设备先进。\n💡 贴士：进入需穿实验服，部分实验室需提前预约，严格遵守实验安全规范，器材禁止私自带出。` }
+          { id: 1, position: [102.740286, 25.072815], name: "教学主楼", type: "academic", desc: "全校核心教学枢纽，集中开展各类理论课程教学工作", fullDesc: `📌 教学主楼【核心教学枢纽】
+作为全校规模最大的教学建筑，共12层，各院系的公共必修课与专业理论课程均在此集中开展，是校园教学活动的核心承载地。
+✅ 核心配置：涵盖86间多媒体标准教室、3个大型阶梯报告厅，每层均设有开放式自习区域与直饮水供给点，一楼大厅设有教务综合服务中心，方便师生办理业务。
+💡 实用指引：早晚自习时段座位需求量大，期末复习期间开放时间延长至22:30，电梯实行单双层分流运行机制，可有效提升通行效率，减少等待时间。` },
+          { id: 2, position: [102.739124, 25.073126], name: "第一教学楼", type: "academic", desc: "基础学科教学主阵地，重点覆盖文理类基础课程", fullDesc: `📌 第一教学楼【基础学科教学中心】
+这座6层楼高的教学楼是校内基础课程教学的核心场所，主要承接高等数学、大学英语、计算机基础、思想政治等公共基础类课程的授课任务。
+✅ 核心配置：42间标准化教室均配备全套多媒体教学设备与空调系统，一楼设有便捷打印服务点与集中饮水区域，满足日常学习需求。
+💡 实用指引：教室分布相对集中，上下课高峰时段人流量较大，建议提前5分钟到达指定教室，避免延误课程。` },
+          { id: 3, position: [102.742157, 25.073568], name: "第二教学楼", type: "academic", desc: "专业课程教学专属楼宇，聚焦林学、园林类专业授课", fullDesc: `📌 第二教学楼【林学专业教学基地】
+该楼宇共7层，紧密围绕学校林学特色办学定位，主要开展林学、园林设计、生态学、水土保持等专业课程的教学工作，是专业人才培养的重要阵地。
+✅ 核心配置：设有专业多媒体教室、小型学术研讨室、课程设计专用教室，部分教室配套专业实验设备，为实践型教学提供支撑。
+💡 实用指引：楼宇距离实验楼较近，便于专业实验课程的衔接开展；楼内自习区域数量有限，更推荐前往图书馆进行自主学习。` },
+          { id: 4, position: [102.743521, 25.071896], name: "第三教学楼", type: "academic", desc: "综合类文科教学楼，主打经管、文法及艺术类课程", fullDesc: `📌 第三教学楼【文科综合教学空间】
+这座5层楼高的建筑是校内文科类课程的主要教学场所，集中开展经济管理、文法社科、外语语言、艺术设计等相关专业课程的教学活动。
+✅ 核心配置：包含35间多媒体教室、6间专业语音教室、2间艺术画室，整体学习环境安静舒适，十分契合文科类课程的学习氛围需求。
+💡 实用指引：楼宇紧邻北苑食堂，下课后就餐极为便捷；楼内自习座位供应充足，是日常自主学习的优质选择。` },
+          { id: 5, position: [102.738569, 25.070258], name: "实训教学楼", type: "academic", desc: "实践教学专属场地，配备专业机房与实训功能教室", fullDesc: `📌 实训教学楼【实践能力培养中心】
+共8层的实训教学楼是校内实践类课程的核心开展场所，主要承接计算机操作实训、测绘技术实训、专业软件应用等实践性强的课程任务。
+✅ 核心配置：6间高配置计算机机房、3间专业测绘实训室、2间电工电子实训室，所有设备均定期进行更新维护，保障实训教学效果。
+💡 实用指引：上机类课程需提前完成机位预约，楼内实训课程安排较为密集，建议携带U盘等存储设备，方便保存实训成果与作业文件。` },
+          { id: 6, position: [102.742891, 25.070582], name: "主图书馆", type: "library", desc: "校内核心藏书机构，馆藏图书文献资源超百万册", fullDesc: `📌 主图书馆【核心文献资源中心】
+作为云南省内林业类文献资源最丰富的图书馆，总建筑面积达1.8万平方米，馆藏纸质图书总量130余万册，电子文献资源200余万篇，其中林学特色文献资源极具优势。
+✅ 核心配置：设有图书借阅大厅、综合阅览区、考研专属自习区、电子阅览室、学术研讨室等功能区域，支持校园卡借阅服务与线上座位预约系统。
+💡 实用指引：进入图书馆需凭校园卡刷卡认证，考研自习座位需通过线上平台提前预约；每周五下午为闭馆整理时间，日常开放至22:00结束。` },
+          { id: 7, position: [102.741856, 25.072135], name: "林业专业分馆", type: "library", desc: "林学专业特色图书馆，专注收藏专业领域文献资料", fullDesc: `📌 林业专业分馆【特色文献资源馆】
+这座3层楼高的专业图书馆是林学相关专业学习的重要支撑，馆藏林学、园林工程、森林保护、木材科学等专业领域的图书与文献资料，针对性极强。
+✅ 核心配置：设有专业文献阅览区、文献检索服务室、珍稀林木标本展示区，馆藏各类珍稀林木标本超千份，同时提供专业外文文献查阅服务。
+💡 实用指引：馆内日常人流量相对较少，专业资料储备齐全，是专业课复习、学术论文撰写的理想场所，开放时间为每日8:00-21:00。` },
+          { id: 8, position: [102.739876, 25.070129], name: "南苑学生食堂", type: "dining", desc: "校内核心餐饮场所，菜品丰富多元，性价比出众", fullDesc: `📌 南苑学生食堂【核心餐饮服务中心】
+作为校本部规模最大的餐饮场所，共3层结构可同时容纳2000余名师生就餐，菜品涵盖南北风味与云南本地民族特色美食，是师生日常就餐的首选之地。
+✅ 核心配置：1楼为大众快餐区，提供经济实惠的基础餐食；2楼为特色风味区，汇聚各类特色小吃；3楼为聚餐套餐区，适合同学聚会；支持校园卡与移动支付两种结算方式，餐具每日进行严格消毒处理。
+💡 实用指引：午餐高峰时段为11:30-12:30，晚餐高峰时段为17:30-18:30，3楼就餐环境更为舒适，错峰就餐可获得更佳体验。` },
+          { id: 9, position: [102.743258, 25.073269], name: "北苑食堂", type: "dining", desc: "特色风味餐饮场所，主打各类地方小吃与特色美食", fullDesc: `📌 北苑食堂【特色风味餐饮中心】
+这座2层楼高的食堂以特色小吃为核心亮点，提供云南米线、手工面条、风味炒饭、炸鸡汉堡、麻辣香锅等多样化美食选择，口味丰富，能满足不同需求。
+✅ 核心配置：设有15个特色餐饮窗口，早餐品类丰富多样，夜宵供应服务延长至21:30，支持移动支付结算，价格经济实惠，性价比高。
+💡 实用指引：食堂紧邻第三教学楼与体育馆，运动结束后或下课后就餐十分便捷，各类小吃分量充足，能满足正常饮食需求。` },
+          { id: 10, position: [102.740635, 25.071589], name: "清真食堂", type: "dining", desc: "民族特色餐饮场所，严格遵循清真饮食规范标准", fullDesc: `📌 清真食堂【民族特色餐饮区】
+专为满足民族饮食需求设立的2层食堂，所有菜品均严格按照清真饮食规范制作，主打清真快餐、特色牛肉面、手抓饭、烤包子等清真特色美食。
+✅ 核心配置：菜品制作干净卫生，分量充足实在，价格定位亲民，充分尊重民族饮食习俗，支持校园卡与移动支付两种结算方式。
+💡 实用指引：日常就餐人数相对适中，无需长时间排队等候，食堂紧邻教学主楼，课间就餐便捷高效，节省往返时间。` },
+          { id: 11, position: [102.738256, 25.071236], name: "教工食堂", type: "dining", desc: "教职工专属餐饮场所，菜品精致，就餐环境清幽", fullDesc: `📌 教工食堂【精致餐饮服务点】
+原为教职工专属食堂，现面向学生开放，1层结构的食堂主打精致家常菜与营养套餐，菜品虽品类不算繁多，但品质上乘，少油少盐，健康可口。
+✅ 核心配置：就餐环境安静雅致，座位宽敞舒适，早餐提供包子、豆浆、油条等经典品类，午晚餐均以套餐形式供应，支持扫码支付结算。
+💡 实用指引：食堂日常人流量较少，无需排队等候，适合偏好安静就餐环境的同学；菜品价格相较于学生食堂略高，整体性价比良好。` },
+          { id: 12, position: [102.743567, 25.072148], name: "体育馆", type: "sports", desc: "综合型体育活动场馆，涵盖球类、健身等多元功能", fullDesc: `📌 体育馆【综合体育活动中心】
+校内标准化综合体育场馆，分为室内主馆与室外运动场地两大部分，主要承担体育课程教学、校体育代表队训练以及各类校园文体活动的举办任务。
+✅ 核心配置：室内设有2个标准篮球场、8个羽毛球场、12张乒乓球台，另配备专业健身房与形体训练教室；室外设有塑胶跑道与标准排球场，满足多元运动需求。
+💡 实用指引：课余时间免费向全校师生开放，各类体育器材可凭有效证件登记租借；周末前往运动的师生较多，建议错峰前往；为保护场地，禁止穿高跟鞋进入场馆。` },
+          { id: 13, position: [102.741234, 25.071001], name: "实验楼", type: "laboratory", desc: "林学专业实验专属楼宇，配备先进科研实验设备", fullDesc: `📌 实验楼【林业科研实验基地】
+共8层的实验楼是校内核心实验教学场所，主要承担林学、园林、生物技术等专业的实验课程教学与各类科研项目的开展工作。
+✅ 核心配置：设有植物标本馆、土壤检测实验室、林木育种实验室、生态监测实验室等专业实验空间，每层均有专业实验指导老师值班值守，实验设备先进且维护到位。
+💡 实用指引：进入实验室必须按规定穿着实验服，部分专业实验室需提前完成预约手续方可使用；严格遵守实验室安全操作规范，实验器材严禁私自带出实验室。` }
         ]
       },
       iconConfig: {
@@ -351,8 +390,8 @@
           this.adjustMapView();
           this.bindAllEvents();
         } catch (error) {
-          console.error('❌ 地图初始化失败:', error);
-          this.showError('地图加载失败，请刷新页面或检查网络连接');
+          console.error('❌ 导航地图初始化过程中出现异常:', error);
+          this.showError('地图加载未能成功完成，请尝试刷新页面或检查当前网络连接状况');
         }
       }
 
@@ -417,7 +456,7 @@
         this.map.add(mainMarker);
         this.markers.push(mainMarker);
 
-        // 校园点位标记（修复路径规划逻辑）
+        // 校园点位标记（优化路径规划逻辑）
         spots.forEach(spot => {
           const marker = new this.AMap.Marker({
             position: spot.position,
@@ -441,34 +480,34 @@
             this.map.setCenter(spot.position);
             this.map.setZoom(18);
 
-            // 优化路径规划状态流转，修复逻辑漏洞
+            // 优化路径规划状态流转逻辑
             if (this.planIsOpen) {
-              // 1. 未设置起点：当前点位设为起点
+              // 1. 未设置起点：将当前点位设为路线起点
               if (this.startPoint === null) {
                 this.startPoint = spot;
                 this.startMarker = marker;
                 marker.setIcon(this.startIcon);
-                // 提示用户下一步操作
+                // 提示用户后续操作
                 const routeName = this.currentRouteType === 'drive' ? '驾车' : this.currentRouteType === 'ride' ? '骑行' : '步行';
-                this.planTipsEl.innerHTML = `🟢 已设置【${spot.name}】为起点 → 点击另一个点位自动规划${routeName}路线`;
+                this.planTipsEl.innerHTML = `🟢 已成功将【${spot.name}】设为路线起点 → 点击另一处目标点位即可自动生成${routeName}导航路线`;
               } 
-              // 2. 已设置起点，且点击不同点位：规划路线
+              // 2. 已设置起点且点击不同点位：执行路线规划
               else if (this.startPoint.id !== spot.id) {
                 const routeName = this.currentRouteType === 'drive' ? '驾车' : this.currentRouteType === 'ride' ? '骑行' : '步行';
-                this.planTipsEl.innerHTML = `🟢 正在规划【${this.startPoint.name}】→【${spot.name}】的${routeName}路线...`;
-                // 执行路径规划
+                this.planTipsEl.innerHTML = `🟢 系统正在生成【${this.startPoint.name}】→【${spot.name}】的${routeName}导航路线...`;
+                // 发起路线规划请求
                 this.searchRoute(this.startPoint.position, spot.position);
-                // 规划后重置起点状态
+                // 规划完成后重置起点状态
                 this.startMarker.setIcon(this.normalIcon);
                 this.startPoint = null;
                 this.startMarker = null;
               }
-              // 3. 点击已选中的起点：取消起点
+              // 3. 点击已选定的起点：取消该起点设置
               else {
                 marker.setIcon(this.normalIcon);
                 this.startPoint = null;
                 this.startMarker = null;
-                this.planTipsEl.innerHTML = '🟢 路径规划功能已开启 → 点击地图上的点位，第一个为起点，第二个自动规划路线';
+                this.planTipsEl.innerHTML = '🟢 路线规划功能已激活 → 点击地图上任意点位，首个点位将设为起点，再次点击其他点位将自动生成导航路线';
               }
             }
           });
@@ -483,8 +522,8 @@
                   <h3 style="color: #009688; margin: 0 0 10px 0; font-size: 16px;">${campusName}</h3>
                   <p style="margin: 0; color: #666; line-height: 1.7; font-size: 14px; white-space: pre-line;">
                     ${campusIntro}<br/><br/>
-                    📍 校区特色：依山而建，原生林木覆盖率高，教学与生活设施完善，是集学习、科研、生活于一体的生态校园。<br/>
-                    📚 办学优势：林学、风景园林为国家级特色专业，拥有多个省级林业科研平台与实践基地。
+                    📍 校区亮点：校园依山而建，原生林木资源丰富，覆盖范围广泛，教学设施与生活配套完善齐全，是一座集学习深造、科研创新、生活休闲于一体的生态化校园。<br/>
+                    📚 核心优势：林学、风景园林两大专业为国家级特色专业，依托多个省级林业科研平台与实践教学基地，形成鲜明的办学特色。
                   </p>
                 </div>`;
       }
@@ -493,7 +532,7 @@
         return `<div style="width: 340px; padding: 15px; border-radius: 8px;">
                   <h4 style="color: #009688; margin: 0 0 10px 0; font-size: 16px; font-weight: bold;">${spot.name}</h4>
                   <p style="margin: 0; color: #333; line-height: 1.7; font-size: 14px; white-space: pre-line;">${spot.fullDesc}</p>
-                  <div style="margin-top:12px;font-size:12px;color:#888;text-align:right;">点击地图空白处关闭窗口</div>
+                  <div style="margin-top:12px;font-size:12px;color:#888;text-align:right;">点击地图空白处即可关闭当前信息窗口</div>
                 </div>`;
       }
 
@@ -535,9 +574,9 @@
         const loadingEl = getDom('loading');
         loadingEl.innerHTML = `<div style="text-align:center;color:#f44336;">
           <div style="font-size:48px;margin-bottom:20px;">⚠️</div>
-          <h3>加载失败</h3>
+          <h3>地图加载失败</h3>
           <p>${message}</p>
-          <button onclick="location.reload()" style="margin-top:20px;padding:10px 20px;background:#009688;color:white;border:none;border-radius:5px;cursor:pointer;">重新加载</button>
+          <button onclick="location.reload()" style="margin-top:20px;padding:10px 20px;background:#009688;color:white;border:none;border-radius:5px;cursor:pointer;">点击重新加载</button>
         </div>`;
       }
 
@@ -555,11 +594,11 @@
           if (this.planIsOpen) {
             switchBtn.classList.add('open');
             switchBtn.innerText = '关闭路径规划';
-            this.planTipsEl.innerHTML = '🟢 路径规划功能已开启 → 点击地图上的点位，第一个为起点，第二个自动规划路线（PS：路径规划由于距离原因不是很完善）';
+            this.planTipsEl.innerHTML = '🟢 路线规划功能已激活 → 点击地图上任意点位，首个点位设为起点，再次点击其他点位自动生成导航路线（注：因校园内部距离较近，路线规划功能存在一定使用限制）';
           } else {
             switchBtn.classList.remove('open');
             switchBtn.innerText = '开启路径规划';
-            this.planTipsEl.innerHTML = '✅ 路径规划功能已关闭 → 仅可查看地图点位信息，无路线规划功能';
+            this.planTipsEl.innerHTML = '✅ 路线规划功能已关闭 → 当前仅支持查看地图点位信息，暂不提供路线导航服务';
             this.clearRouteLayer();
             if (this.startMarker) {
               this.startMarker.setIcon(this.normalIcon);
@@ -580,7 +619,7 @@
             e.target.classList.add('active');
             this.currentRouteType = e.target.dataset.type;
 
-            // 切换路线类型后，若有起点则重新规划
+            // 切换路线类型后，若已设置起点则重新规划路线
             if (this.startPoint) {
               const start = this.startPoint.position;
               const currentCenter = this.map.getCenter();
@@ -599,9 +638,9 @@
           }
           this.startPoint = null;
           this.startMarker = null;
-          // 重置提示文本
+          // 重置提示文本内容
           if (this.planIsOpen) {
-            this.planTipsEl.innerHTML = '🟢 路径规划功能已开启 → 点击地图上的点位，第一个为起点，第二个自动规划路线';
+            this.planTipsEl.innerHTML = '🟢 路线规划功能已激活 → 点击地图上任意点位，首个点位设为起点，再次点击其他点位自动生成导航路线';
           }
         });
       }
@@ -619,14 +658,14 @@
         this.routeLayers.length = 0;
       }
 
-      // 优化路径规划查询逻辑，增加错误日志
+      // 优化路径规划查询逻辑，完善错误处理机制
       searchRoute(start, end) {
         this.clearRouteLayer();
         let planner = null;
         const { AMap } = this;
         const routeName = this.currentRouteType === 'drive' ? '驾车' : this.currentRouteType === 'ride' ? '骑行' : '步行';
 
-        // 根据路线类型创建规划实例
+        // 根据选择的路线类型创建对应规划实例
         switch (this.currentRouteType) {
           case 'walk':
             planner = new AMap.Walking({
@@ -655,15 +694,15 @@
             });
         }
 
-        // 调用高德API规划路线，增加错误捕获
+        // 调用高德地图API发起路线规划请求，增加错误捕获机制
         planner.search([{ location: start }, { location: end }], (status, result) => {
           if (status === 'complete' && result.routes && result.routes.length > 0) {
             this.renderRouteLine(result.routes[0].path);
-            this.planTipsEl.innerHTML = `✅ 【${routeName}】路线规划成功 → 可点击清空路线重新规划`;
+            this.planTipsEl.innerHTML = `✅ 【${routeName}】导航路线生成成功 → 如需重新规划，可点击清除路线按钮后再次操作`;
           } else {
-            console.warn(`❌ ${routeName}路线规划失败，状态：${status}，结果：`, result);
+            console.warn(`❌ ${routeName}路线规划请求未能成功响应，状态码：${status}，返回结果：`, result);
             this.renderFailRouteLine(start, end);
-            this.planTipsEl.innerHTML = `⚠️ ${routeName}路线规划失败，已绘制直连参考线 → 可尝试切换路线类型`;
+            this.planTipsEl.innerHTML = `⚠️ ${routeName}路线规划失败，已为您生成直连参考线路 → 建议尝试切换其他路线类型后重新规划`;
           }
         });
       }
@@ -729,10 +768,10 @@
       }
     }
 
-    // 全局地图实例
+    // 全局导航地图实例
     let campusMap;
 
-    // DOM加载完成后初始化
+    // 页面DOM元素加载完成后初始化地图
     document.addEventListener('DOMContentLoaded', () => {
       campusMap = new SmartCampusMap();
       campusMap.init();
